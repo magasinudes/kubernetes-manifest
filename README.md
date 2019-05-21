@@ -1,1 +1,2 @@
-# kubernetes-manifest
+# Kubernetes manifest
+Regroupement des ymal pour Kubernetes.
