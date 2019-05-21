@@ -1,0 +1,15 @@
+apiVersion: "v1"
+kind: "Service"
+metadata:
+  name: "hello-world-java-service"
+  namespace: "default"
+  labels:
+    app: "hello-world-java"
+spec:
+  ports:
+  - protocol: "TCP"
+    port: 80
+  selector:
+    app: "hello-world-java"
+  type: "LoadBalancer"
+  loadBalancerIP: ""
