@@ -1,0 +1,40 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "export"
+  namespace: "default"
+  labels:
+    app: "export"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "export"
+  template:
+    metadata:
+      labels:
+        app: "export"
+    spec:
+      containers:
+      - name: "export-microservice"
+        image: gcr.io/magasinudes-241416/export-microservice
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "export-hpa"
+  namespace: "default"
+  labels:
+    app: "export"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "export"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80

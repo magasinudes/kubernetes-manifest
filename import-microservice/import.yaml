@@ -1,0 +1,40 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "import"
+  namespace: "default"
+  labels:
+    app: "import"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "import"
+  template:
+    metadata:
+      labels:
+        app: "import"
+    spec:
+      containers:
+      - name: "reservations-microservice"
+        image: gcr.io/magasinudes-241416/import-microservice
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "import-hpa"
+  namespace: "default"
+  labels:
+    app: "import"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "import"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
