@@ -1,35 +1,35 @@
 apiVersion: "extensions/v1beta1"
 kind: "Deployment"
 metadata:
-  name: "hello-world-java"
+  name: "frontend"
   namespace: "default"
   labels:
-    app: "hello-world-java"
+    app: "frontend"
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: "hello-world-java"
+      app: "frontend"
   template:
     metadata:
       labels:
-        app: "hello-world-java"
+        app: "frontend"
     spec:
       containers:
-      - name: "hello-world-java-sha256"
-        image: "gcr.io/magasinudes/hello-world-java@sha256:5eeef71c8efd991d26698dc72384b485e865247451c6df2eda93e40920fbb0a4"
+      - name: "frontend-microservice"
+        image: gcr.io/magasinudes-241416/frontend
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
 metadata:
-  name: "hello-world-java-hpa"
+  name: "frontend-hpa"
   namespace: "default"
   labels:
-    app: "hello-world-java"
+    app: "frontend"
 spec:
   scaleTargetRef:
     kind: "Deployment"
-    name: "hello-world-java"
+    name: "frontend"
     apiVersion: "apps/v1beta1"
   minReplicas: 1
   maxReplicas: 5

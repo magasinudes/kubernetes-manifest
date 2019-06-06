@@ -1,0 +1,20 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "database"
+  namespace: "default"
+  labels:
+    app: "database"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "database"
+  template:
+    metadata:
+      labels:
+        app: "database"
+    spec:
+      containers:
+      - name: "database-microservice"
+        image: gcr.io/magasinudes-241416/database

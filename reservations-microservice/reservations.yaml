@@ -1,0 +1,41 @@
+---
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "reservations"
+  namespace: "default"
+  labels:
+    app: "reservations"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: "reservations"
+  template:
+    metadata:
+      labels:
+        app: "reservations"
+    spec:
+      containers:
+      - name: "reservations-microservice"
+        image: gcr.io/magasinudes-241416/reservations-microservice
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "reservations-hpa"
+  namespace: "default"
+  labels:
+    app: "reservations"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "reservations"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
