@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: "frontend-microservice"
-        image: gcr.io/magasinudes-241416/frontend
+        image: gcr.io/magasinudes-241416/frontend:latest
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
