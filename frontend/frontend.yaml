@@ -1,40 +1,24 @@
-apiVersion: "extensions/v1beta1"
-kind: "Deployment"
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: "frontend"
-  namespace: "default"
+  name: frontend
   labels:
-    app: "frontend"
+    app: frontend
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: "frontend"
+      app: frontend
+  strategy:
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: "frontend"
+        app: frontend
     spec:
       containers:
       - name: "frontend-microservice"
         image: gcr.io/magasinudes-241416/frontend:latest
----
-apiVersion: "autoscaling/v2beta1"
-kind: "HorizontalPodAutoscaler"
-metadata:
-  name: "frontend-hpa"
-  namespace: "default"
-  labels:
-    app: "frontend"
-spec:
-  scaleTargetRef:
-    kind: "Deployment"
-    name: "frontend"
-    apiVersion: "apps/v1beta1"
-  minReplicas: 1
-  maxReplicas: 5
-  metrics:
-  - type: "Resource"
-    resource:
-      name: "cpu"
-      targetAverageUtilization: 80
+        ports:
+        - name: http
+          containerPort: 5000

@@ -18,6 +18,9 @@ spec:
       containers:
       - name: "authentication-microservice"
         image: gcr.io/magasinudes-241416/authentication-microservice
+        ports:
+        - name: http
+          containerPort: 8080
 ---
 apiVersion: "autoscaling/v2beta1"
 kind: "HorizontalPodAutoscaler"
