@@ -1,16 +1,16 @@
 apiVersion: "v1"
 kind: "Service"
 metadata:
-  name: "hello-world-java-service"
+  name: "database-service"
   namespace: "default"
   labels:
-    app: "hello-world-java"
+    app: database
 spec:
   ports:
   - protocol: "TCP"
-    port: 80
-    targetPort: 8080
+    port: 5432
+    targetPort: 5432
   selector:
-    app: "hello-world-java"
+    app: "database"
   type: "LoadBalancer"
   loadBalancerIP: ""

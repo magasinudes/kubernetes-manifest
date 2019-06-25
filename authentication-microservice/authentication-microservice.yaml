@@ -1,0 +1,43 @@
+apiVersion: "extensions/v1beta1"
+kind: "Deployment"
+metadata:
+  name: "authentication"
+  namespace: "default"
+  labels:
+    app: "authentication"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "authentication"
+  template:
+    metadata:
+      labels:
+        app: "authentication"
+    spec:
+      containers:
+      - name: "authentication-microservice"
+        image: gcr.io/magasinudes-241416/authentication-microservice
+        ports:
+        - name: http
+          containerPort: 8080
+---
+apiVersion: "autoscaling/v2beta1"
+kind: "HorizontalPodAutoscaler"
+metadata:
+  name: "authentication-hpa"
+  namespace: "default"
+  labels:
+    app: "authentication"
+spec:
+  scaleTargetRef:
+    kind: "Deployment"
+    name: "authentication"
+    apiVersion: "apps/v1beta1"
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: "Resource"
+    resource:
+      name: "cpu"
+      targetAverageUtilization: 80
